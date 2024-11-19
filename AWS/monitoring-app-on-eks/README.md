@@ -1,0 +1,1 @@
+Deploy CPU/Memroing monitoring app on EKS.
