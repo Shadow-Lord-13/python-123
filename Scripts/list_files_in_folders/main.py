@@ -1,27 +1,27 @@
 import os
 
 def main():
-    try:       
-        folder_path = input("Please enter the folders(With spaces in between: ").split()
-        for folder in folder_path:
-            files, error_message = list_files(folder)
+    try:
+        folders = input("Please enter the folder names: ").split()
+        for folder in folders:
+            files, error_message = list_files_in_folder(folder)
             if files:
-                print(f"===== Listing files for folder - {folder}")
+                print(f"===== Listing files in folder - {folder}")
                 for file in files:
                     print(file)
             else:
-                print(f"===== Error while fetching files from folder - {folder}: {error_message}")
+                print(f"===== Error {folder} not found: {error_message}")
     except Exception as e:
         print(f"Error: {e}")
 
-def list_files(folder_path):
+def list_files_in_folder(folder):
     try:
-        files = os.listdir(folder_path)
+        files = os.listdir(folder)
         return files, None
     except FileNotFoundError:
-        return None, "Folder not found"
+        return None, "Folder does not exist"
     except PermissionError:
-        return None, "Permission denied"
+        return None, "Permission Denied!!!"
     
 if __name__ == "__main__":
     main()
