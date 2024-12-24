@@ -1,0 +1,12 @@
+[
+    {
+        "task": "First Task",
+        "priority": "High",
+        "due_date": "25/12/24"
+    },
+    {
+        "task": "Second Task",
+        "priority": "Low",
+        "due_date": "26/12/24"
+    }
+]

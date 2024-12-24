@@ -14,12 +14,9 @@ Learning Goals:
 - Understand basic Python syntax, functions, and data structures like lists/dictionaries.
 - Practice reading and writing to files (CSV or JSON) for persistence.
 
-
-Completed Goals: Date -> 24/Dec/24
-- Understand basic Python syntax, functions, and data structures like lists/dictionaries.
-
-Pending Goals: Date -> 
-- Practice reading and writing to files (CSV or JSON) for persistence.
+Completed Goals: 
+- Understand basic Python syntax, functions, and data structures like lists/dictionaries. Date -> 24/Dec/24
+- Practice reading and writing to files (CSV or JSON) for persistence. Date -> 25/Dec/24
 
 Enhancements: Date -> 25/12/24
 - Adding more properties to task:

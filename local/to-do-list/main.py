@@ -1,5 +1,7 @@
 import json
 
+FILE_NAME = "tasks.json"
+
 def display_menu():
     print(
     "\nOptions available :\n"
@@ -18,6 +20,17 @@ def display_task_options():
     "3 -> Update priority\n"
     "4 -> Exit update menu\n"
 )
+    
+def load_tasks():
+    try:
+        with open(FILE_NAME, "r") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+
+def save_tasks(tasks):
+    with open(FILE_NAME, "w") as file:
+        json.dump(tasks, file, indent=4)
 
 def add_task(tasks):
     task = input("\nPlease enter the task description: ")
@@ -35,7 +48,7 @@ def add_task(tasks):
 
 def view_task(tasks):
     if not tasks:
-        print("No task available")
+        print("\nNo task available")
     else:
         print(f"\n{'No.':<5} {'Task':<30} {'Priority':<10} {'Due Date':<10}")
         print("-" * 57)
@@ -60,8 +73,8 @@ def update_task(tasks):
                         tasks[task_no-1]['task'] = updated_task
                         print("Task description updated successfully")
                     elif user_choice==2:
-                        updated_date = input("Enter the update date for the task: ")
-                        tasks[task_no-1]['date'] = updated_date
+                        updated_due_date = input("Enter the update due date for the task: ")
+                        tasks[task_no-1]['due_date'] = updated_due_date
                         print("Task date updated successfully")
                     elif user_choice==3:
                         updated_priority = input("Enter the update priority for the task: ")
@@ -79,7 +92,7 @@ def update_task(tasks):
 
 def delete_task(tasks):
     view_task(tasks)
-    task_no = int(input("Enter task to be deleted: "))
+    task_no = int(input("\nEnter task to be deleted: "))
     if tasks:
         try:
             if 1<= task_no <= len(tasks):
@@ -90,7 +103,7 @@ def delete_task(tasks):
 
 def main():
     
-    tasks = []
+    tasks = load_tasks()
     print("Welcome to the To-Do List App!!!")
     try:
         while True:
@@ -106,10 +119,12 @@ def main():
             elif user_input == 4:
                 view_task(tasks)
             elif user_input == 5:
-                print("Thanks for using our App!!!")
+                save_tasks(tasks)
+                print("\nTasks saved successfully")
+                print("\nThanks for using our App!!!")
                 break
             else:
-                print("Error: Please enter valid input!")
+                print("\nError: Please enter valid input!")
     except Exception as e:
         print(f" Error: {e}")
 
