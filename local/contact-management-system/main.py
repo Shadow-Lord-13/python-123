@@ -45,13 +45,21 @@ def add_contact():
 def view_contacts():
     con = sqlite3.connect("contacts.db")
     cur = con.cursor()
-
-    print("\nContacts:")
-    res = cur.execute("SELECT * FROM contacts")
-    print(res.fetchall())
-
-    con.commit()
+    cur.execute("SELECT * FROM contacts")
+    contacts = cur.fetchall()
     con.close()
+    
+    if contacts:
+        print("\nContacts:")
+        print("*"*40)
+        for contact in contacts:
+            id = contact[0]
+            firstname = contact[1]
+            lastname = contact[2]
+            phonenumber = contact[3]
+            print(f"ID: {id:<5} First Name: {firstname:<10} Last Name: {lastname:<10} Phone Number: {phonenumber:<11}")
+    else:
+        print("\nNo contacts found!")
 
 
 def main():
