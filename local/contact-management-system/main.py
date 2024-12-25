@@ -9,6 +9,15 @@ def display_options():
     "4 -> View Contact\n"
     "5 -> Exit App\n"
 )
+    
+def display_update_choice():
+    print(
+    "\nOptions available :\n"
+    "1 -> Update First Name\n"
+    "2 -> Update last Name\n"
+    "3 -> Update Phone Number\n"
+    "4 -> Exit App\n"
+)
 
 def create_database():
     con = sqlite3.connect("contacts.db")
@@ -61,10 +70,65 @@ def view_contacts():
     else:
         print("\nNo contacts found!")
 
+def update_contacts():
+    view_contacts()
+    con = sqlite3.connect("contacts.db")
+    cur = con.cursor()
+    # contacts = cur.fetchall()
+    id = int(input("\nPlease select the Id of the contact you want to update: "))
+    while True:
+        display_update_choice()
+        user_choice = int(input("\nPlease select the option to update(First Name/Last Name/Phone Number): "))
+        if user_choice==1:
+            first_name = input("\nPlease enter the updated First Name: ")
+            query = "UPDATE contacts SET firstname = ? WHERE id = ?"
+            parameters = (first_name, id)
+            cur.execute(query, parameters)
+            print(f"\nFirst Name updated for contact with id - {id}")
+        elif user_choice==2:
+            last_name = input("\nPlease enter the updated Last Name: ")
+            query = "UPDATE contacts SET lastname = ? WHERE id = ?"
+            parameters = (last_name, id)
+            cur.execute(query, parameters)
+            print(f"\nLast Name updated for contact with id - {id}")
+        elif user_choice==3:
+            phone_number = input("\nPlease enter the updated Phone Number: ")
+            query = "UPDATE contacts SET phonenumber = ? WHERE id = ?"
+            parameters = (phone_number, id)
+            print(f"\nPhone Number updated for contact with id - {id}")
+            cur.execute(query, parameters)
+        elif user_choice==4:
+            con.commit()
+            con.close()
+            break
+        else:
+            print("\nPlease select a valid options!")
+
+def delete_contact():
+    view_contacts()
+    con = sqlite3.connect("contacts.db")
+    cur = con.cursor()
+    cur.execute("SELECT * FROM contacts")
+    contacts = cur.fetchall()
+    id = int(input("\nPlease selete the id of contact you want to delete: "))
+    query = "DELETE FROM contacts WHERE id = ?"
+    paramter = (id,)
+    cur.execute(query, paramter)
+    print("\nContact Deleted:")
+    print("*"*40)
+    for contact in contacts:
+        if contact[0] == id:
+            firstname = contact[1]
+            lastname = contact[2]
+            phonenumber = contact[3]
+            print(f"ID: {id:<5} First Name: {firstname:<10} Last Name: {lastname:<10} Phone Number: {phonenumber:<11}")
+            break
+    con.commit()
+    con.close()
 
 def main():
     create_database()
-    print("Welcome to Contact Management System")
+    print("\nWelcome to Contact Management System")
 
     while True:
         try:
@@ -73,6 +137,10 @@ def main():
 
             if user_input == 1:
                 add_contact()
+            elif user_input == 2:
+                update_contacts()
+            elif user_input == 3:
+                delete_contact()
             elif user_input == 4:
                 view_contacts()
             elif user_input == 5:
