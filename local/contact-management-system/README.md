@@ -13,3 +13,5 @@ CRUD Operations:
 Learning Goals:
 - Work with SQLite databases.
 - Use basic SQL queries within Python.
+
+Completion Date: 25/Dec/2024

@@ -7,7 +7,8 @@ def display_options():
     "2 -> Edit Contact\n"
     "3 -> Delete Contact\n"
     "4 -> View Contact\n"
-    "5 -> Exit App\n"
+    "5 -> Search Contact\n"
+    "6 -> Exit App\n"
 )
     
 def display_update_choice():
@@ -62,11 +63,7 @@ def view_contacts():
         print("\nContacts:")
         print("*"*40)
         for contact in contacts:
-            id = contact[0]
-            firstname = contact[1]
-            lastname = contact[2]
-            phonenumber = contact[3]
-            print(f"ID: {id:<5} First Name: {firstname:<10} Last Name: {lastname:<10} Phone Number: {phonenumber:<11}")
+            print(f"ID: {contact[0]:<5} First Name: {contact[1]:<15} Last Name: {contact[2]:<10} Phone Number: {contact[3]:<11}")
     else:
         print("\nNo contacts found!")
 
@@ -118,13 +115,31 @@ def delete_contact():
     print("*"*40)
     for contact in contacts:
         if contact[0] == id:
-            firstname = contact[1]
-            lastname = contact[2]
-            phonenumber = contact[3]
-            print(f"ID: {id:<5} First Name: {firstname:<10} Last Name: {lastname:<10} Phone Number: {phonenumber:<11}")
+            print(f"ID: {contact[0]:<5} First Name: {contact[1]:<15} Last Name: {contact[2]:<10} Phone Number: {contact[3]:<11}")
             break
     con.commit()
     con.close()
+
+def search_contact():
+    try:
+        con = sqlite3.connect("contacts.db")
+        cur = con.cursor()
+        user_query = input("\nPlease enter First Name or Last Name or Phone Number to search: ")
+        query = "SELECT * FROM contacts WHERE firstname LIKE ? OR lastname LIKE ? OR phonenumber LIKE ?"
+        parameters = (f"%{user_query}%", f"%{user_query}%", f"%{user_query}%")
+        cur.execute(query, parameters)
+        contacts = cur.fetchall()
+        con.close()
+        if contacts:
+            print("\nSearch Result:")
+            print("-"*40)
+            for contact in contacts:
+                print(f"ID: {contact[0]:<5} First Name: {contact[1]:<15} Last Name: {contact[2]:<10} Phone Number: {contact[3]:<11}")
+        else:
+            print("\nNo contacts found")
+    except Exception as e:
+        print(f"Error: {e}")
+            
 
 def main():
     create_database()
@@ -144,6 +159,8 @@ def main():
             elif user_input == 4:
                 view_contacts()
             elif user_input == 5:
+                search_contact()
+            elif user_input == 6:
                 print("\nExiting App: Thank you for using our App!!")
                 break
         except Exception as e:
